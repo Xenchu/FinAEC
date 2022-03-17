@@ -15,22 +15,92 @@ namespace FinAEC
             DateFin = new DateTime(yearEnd, monthEnd, dayEnd);
         }
 
-        public Tuple<int, int, int, TimeSpan> GetTimeLeft()
+        public TimeLeft GetTimeLeft()
         {
             var now = DateTime.Now;
 
-            var year = DateFin.Year - now.Year;
-            var yearLeft = year < 0 ? 0 : year;
-
-            var month = DateFin.Month - now.Month;
-            var monthLeft = month < 0 ? 0 : month;
-
-            var days = DateFin.Day - now.Day;
-            var daysLeft = days < 0 ? 0 : days;
-
             var timeleft = DateFin - now;
 
-            return new Tuple<int, int, int, TimeSpan>(yearLeft, monthLeft, daysLeft, timeleft);
+            var yearLeft = 0;
+            var monthLeft = 0;
+            var daysLeft = timeleft.Days - 1;
+
+            var startYear = now.Year;
+
+            while (daysLeft >= 365)
+            {
+                if (IsLeapYear(startYear) && daysLeft < 366)
+                    break;
+
+                daysLeft = IsLeapYear(startYear) ? daysLeft - 366 : daysLeft - 365;
+                yearLeft += 1;
+                startYear += 1;
+            }
+
+            var monthToCalculate = now.Month;
+
+            while (daysLeft >= 28)
+            {
+            monthToCalculate += 1;
+                monthToCalculate = monthToCalculate > 12 ? 1 : monthToCalculate;
+
+                switch (monthToCalculate)
+                {
+                    case 1:
+                    case 3:
+                    case 5:
+                    case 7:
+                    case 8:
+                    case 10:
+                    case 12:
+                        if (daysLeft < 31)
+                            break;
+                        daysLeft -= 31;
+                        break;
+                    case 4:
+                    case 6:
+                    case 9:
+                    case 11:
+                        if (daysLeft < 30)
+                            break;
+                        daysLeft -= 30;
+                        break;
+                    case 2:
+                        if (IsLeapYear(startYear) && daysLeft < 29)
+                            break;
+                        else if (!IsLeapYear(startYear) && daysLeft < 28)
+                            break;
+                        else
+                        {
+                            daysLeft = IsLeapYear(startYear) ? daysLeft - 29 : daysLeft - 28;
+                            break;
+                        }
+                }
+
+                monthLeft += 1;
+            }
+
+            return new TimeLeft()
+            {
+                Years = yearLeft,
+                Month = monthLeft,
+                Days = daysLeft,
+                Hours = timeleft.Hours,
+                Minutes = timeleft.Minutes,
+                Seconds = timeleft.Seconds
+            };
+        }
+
+        private bool IsLeapYear(int year)
+        {
+            bool isLeapYear;
+
+            if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0))
+                isLeapYear = true;
+            else
+                isLeapYear = false;
+
+            return isLeapYear;
         }
     }
 }

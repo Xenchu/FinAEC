@@ -10,7 +10,9 @@ do
 {
     Console.Clear();
     var timeLeft = countDownAEC.GetTimeLeft();
-    var text = string.Empty;
+    var text = "Fin de l'A.E.C. - Développement d'application sécuritaires";
+
+    Console.WriteLine(text);
 
     Console.WriteLine();
     var horizontalBar = "|";
@@ -25,12 +27,12 @@ do
                             horizontalBar);
 
     var body = String.Format("{0,1} {1,7} {2,1} {3,8} {4,1} {5,6} {6,1} {7,7} {8,1} {9,10} {10,1} {11,10} {12,1}",
-                            horizontalBar, timeLeft.Item1,
-                            horizontalBar, timeLeft.Item2,
-                            horizontalBar, timeLeft.Item3,
-                            horizontalBar, timeLeft.Item4.Hours,
-                            horizontalBar, timeLeft.Item4.Minutes,
-                            horizontalBar, timeLeft.Item4.Seconds,
+                            horizontalBar, timeLeft.Years,
+                            horizontalBar, timeLeft.Month,
+                            horizontalBar, timeLeft.Days,
+                            horizontalBar, timeLeft.Hours,
+                            horizontalBar, timeLeft.Minutes,
+                            horizontalBar, timeLeft.Seconds,
                             horizontalBar);
 
 
