@@ -17,6 +17,7 @@ namespace FinAEC
 
         public TimeLeft GetTimeLeft()
         {
+            var exit = false;
             var now = DateTime.Now;
 
             var timeleft = DateFin - now;
@@ -41,7 +42,7 @@ namespace FinAEC
 
             while (daysLeft >= 28)
             {
-            monthToCalculate += 1;
+                monthToCalculate += 1;
                 monthToCalculate = monthToCalculate > 12 ? 1 : monthToCalculate;
 
                 switch (monthToCalculate)
@@ -54,7 +55,10 @@ namespace FinAEC
                     case 10:
                     case 12:
                         if (daysLeft < 31)
+                        {
+                            exit = true;
                             break;
+                        }
                         daysLeft -= 31;
                         break;
                     case 4:
@@ -62,20 +66,31 @@ namespace FinAEC
                     case 9:
                     case 11:
                         if (daysLeft < 30)
+                        {
+                            exit = true;
                             break;
+                        }
                         daysLeft -= 30;
                         break;
                     case 2:
                         if (IsLeapYear(startYear) && daysLeft < 29)
+                        {
+                            exit = true;
                             break;
+                        }
                         else if (!IsLeapYear(startYear) && daysLeft < 28)
+                        {
+                            exit = true;
                             break;
+                        }
                         else
                         {
                             daysLeft = IsLeapYear(startYear) ? daysLeft - 29 : daysLeft - 28;
                             break;
                         }
                 }
+
+                if (exit) break;
 
                 monthLeft += 1;
             }
