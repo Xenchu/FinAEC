@@ -5,7 +5,7 @@ const int month = 7;
 const int Day = 13;
 
 var countDownAEC = new CountDownAEC(year, month, Day);
-
+var exit = true;
 do
 {
     Console.Clear();
@@ -17,7 +17,7 @@ do
     Console.WriteLine();
     var horizontalBar = "|";
     var verticalBar = "-------------------------------------------------------------------";
-    var header = String.Format("{0,1} {1,7} {2,1} {3,8} {4,1} {5,6} {6,1} {7,7} {8,1} {9,10} {10,1} {11,10} {12,1}",
+    var header = string.Format("{0,1} {1,7} {2,1} {3,8} {4,1} {5,6} {6,1} {7,7} {8,1} {9,10} {10,1} {11,10} {12,1}",
                             horizontalBar, "Year(s)",
                             horizontalBar, "Month(s)",
                             horizontalBar, "Day(s)",
@@ -26,7 +26,7 @@ do
                             horizontalBar, "Seconds(s)",
                             horizontalBar);
 
-    var body = String.Format("{0,1} {1,7} {2,1} {3,8} {4,1} {5,6} {6,1} {7,7} {8,1} {9,10} {10,1} {11,10} {12,1}",
+    var body = string.Format("{0,1} {1,7} {2,1} {3,8} {4,1} {5,6} {6,1} {7,7} {8,1} {9,10} {10,1} {11,10} {12,1}",
                             horizontalBar, timeLeft.Years,
                             horizontalBar, timeLeft.Month,
                             horizontalBar, timeLeft.Days,
@@ -42,6 +42,9 @@ do
     Console.WriteLine(body);
     Console.WriteLine(verticalBar);
 
-    System.Threading.Thread.Sleep(1000);
-} while (true);
+    if (timeLeft.Years == 0 && timeLeft.Month == 0 && timeLeft.Days == 0 && timeLeft.Hours == 0 && timeLeft.Minutes == 0 && timeLeft.Seconds == 0)
+        exit = false;
+
+    Thread.Sleep(1000);
+} while (exit);
 
